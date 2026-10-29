@@ -13,6 +13,8 @@
 
 final class PriceCalculator
 {
+    private const IVA = 1.21;
+
     public function __construct(private PricingStrategy $strategy) {}
 
     public function calculate(float $amount): float
@@ -20,17 +22,8 @@ final class PriceCalculator
         return $this->strategy->calculate($amount);
     }
 
-    /**
-     * ❌ METODO MAL APLICADO: calcularConIva()
-     *    Duplica la logica de arriba "para no tocar lo que ya anda".
-     *    Cuando cambie el descuento de obra social, hay que acordarse de los DOS lugares.
-     */
-    public function calcularConIva(float $monto, string $tipoPaciente): float
+    public function calculateWithIva(float $amount): float
     {
-        if ($tipoPaciente === 'obra_social') {
-            return ($monto * 0.7) * 1.21;
-        }
-
-        return $monto * 1.21;
+        return $this->calculate($amount) * self::IVA;
     }
 }
