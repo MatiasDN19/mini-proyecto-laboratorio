@@ -67,6 +67,8 @@ $accion = $_GET['accion'] ?? 'crear';
 //    cada pantalla nueva obliga a MODIFICAR este bloque.
 $controller = new OrderController();
 
+require __DIR__ . '/../views/layout/header.php';
+
 if ($accion === 'crear') {
     $controller->create();
 } elseif ($accion === 'listar') {
@@ -76,6 +78,8 @@ if ($accion === 'crear') {
 } else {
     echo 'Accion no encontrada';
 }
+
+require __DIR__ . '/../views/layout/footer.php';
 
 /*
  * ✅ FORMA CORRECTA: tabla de rutas. Agregar una pantalla ya no modifica el if.
