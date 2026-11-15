@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Paciente particular: paga el monto completo.
  */
