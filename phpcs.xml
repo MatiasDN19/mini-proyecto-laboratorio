@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<ruleset name="laboratorio-pedidos">
+    <description>Estandar PSR-12 para el codigo refactorizado y sus pruebas.</description>
+    <file>src/Pricing</file>
+    <file>tests</file>
+    <arg name="extensions" value="php"/>
+    <arg name="colors"/>
+    <arg value="sp"/>
+    <rule ref="PSR12">
+        <!--
+            El proyecto legado no usa namespaces: las clases se cargan con
+            require manuales en public/index.php. Migrar a namespaces y PSR-4
+            es parte del refactor de autoload (otra deuda del mapa), asi que
+            por ahora no exigimos esta regla.
+        -->
+        <exclude name="PSR1.Classes.ClassDeclaration.MissingNamespace"/>
+        <!--
+            Los finales de linea los maneja Git (core.autocrlf): en el repo
+            quedan en LF, pero en Windows se ven en CRLF. Sin esta exclusion,
+            phpcs fallaria en las compus del grupo aunque el codigo este bien.
+        -->
+        <exclude name="Generic.Files.LineEndings"/>
+    </rule>
+</ruleset>
