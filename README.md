@@ -1,7 +1,9 @@
 # laboratorio-pedidos — proyecto de práctica
 
 Sistema de gestión de pedidos de un laboratorio de análisis clínicos.
-**PHP Vanilla, sin frameworks, sin Composer.** Corre en XAMPP tal cual está.
+**PHP Vanilla, sin frameworks.** Corre en XAMPP tal cual está.
+
+[![CI](https://github.com/MatiasDN19/mini-proyecto-laboratorio/actions/workflows/ci.yml/badge.svg)](https://github.com/MatiasDN19/mini-proyecto-laboratorio/actions/workflows/ci.yml)
 
 > ⚠️ **Este proyecto está roto a propósito.**
 > Cada archivo contiene deuda técnica sembrada, marcada con comentarios:
@@ -32,6 +34,51 @@ Acciones disponibles:
 
 La persistencia está simulada en memoria para que el proyecto arranque sin
 configurar MySQL. Eso **no** es parte de la deuda a corregir.
+
+---
+
+## Pruebas e integración continua
+
+La aplicación sigue corriendo en XAMPP **sin Composer**. Composer se usa solo
+para las herramientas de desarrollo: **PHPUnit** (pruebas) y **PHP_CodeSniffer**
+(lint con el estándar PSR-12).
+
+### Correr las pruebas y el lint en tu compu
+
+```
+composer install
+vendor/bin/phpunit --testdox
+vendor/bin/phpcs
+```
+
+En Windows, si `vendor/bin/phpunit` no se reconoce, usar `vendor\bin\phpunit`.
+También están los atajos `composer test` y `composer lint`.
+
+### Qué se prueba
+
+- **Alcance:** el código refactorizado con el patrón Strategy (`src/Pricing/`).
+- **Tipo de prueba:** unitarias, automatizadas con PHPUnit. Son la base de la
+  pirámide de testing: rápidas y baratas, corren en milisegundos.
+- **Casos documentados:** [`docs/CASOS-DE-PRUEBA.md`](docs/CASOS-DE-PRUEBA.md),
+  con al menos un caso positivo y uno negativo por funcionalidad.
+
+### Integración continua (GitHub Actions)
+
+El workflow [`.github/workflows/ci.yml`](.github/workflows/ci.yml) se ejecuta
+**en cada push y en cada Pull Request**, con PHP 8.2 y 8.3:
+
+1. Descarga el código e instala PHP.
+2. Valida `composer.json` e instala las dependencias (con caché).
+3. **Lint de sintaxis:** `php -l` sobre todos los archivos PHP.
+4. **Lint de estándar:** PHPCS con PSR-12 sobre `src/Pricing` y `tests`.
+5. **Pruebas:** PHPUnit.
+
+Si cualquier paso falla, el PR queda marcado en rojo y no se mergea hasta
+arreglarlo: **build roto se arregla primero**.
+
+PHPCS revisa solo el código refactorizado y sus pruebas: el resto de `src/`
+todavía tiene la deuda sembrada a propósito. La configuración y sus
+excepciones justificadas están en [`phpcs.xml`](phpcs.xml).
 
 ---
 
