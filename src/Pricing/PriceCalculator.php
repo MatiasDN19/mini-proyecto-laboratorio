@@ -1,4 +1,5 @@
 <?php
+
 /**
  * ============================================================================
  *  CALCULO DE PRECIOS — Patron STRATEGY
@@ -15,10 +16,16 @@ final class PriceCalculator
 {
     private const IVA = 1.21;
 
-    public function __construct(private PricingStrategy $strategy) {}
+    public function __construct(private PricingStrategy $strategy)
+    {
+    }
 
     public function calculate(float $amount): float
     {
+        if ($amount < 0) {
+            throw new InvalidArgumentException('El monto no puede ser negativo.');
+        }
+
         return $this->strategy->calculate($amount);
     }
 
