@@ -7,6 +7,9 @@ final class RetiredStrategy implements PricingStrategy
 {
     public function __construct(private float $discount = 0.50)
     {
+        if ($this->discount < 0 || $this->discount > 1) {
+            throw new InvalidArgumentException('El descuento debe estar entre 0 y 1.');
+        }
     }
 
     public function calculate(float $amount): float
